@@ -23,8 +23,7 @@ public class ConnectResHelper {
 		}
 		is.close();
 		String result = baos.toString();
-		if(result.contains("charset=gb2312"))
-			return baos.toString("gb2312");
+		baos.close();
 		return result;
 	}
 	public static Bitmap getImg(String path) throws IOException{

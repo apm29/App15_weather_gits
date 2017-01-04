@@ -10,7 +10,7 @@ public class Weather {
 	public static void main(String[] args) {
 		System.out.println(11);
 	}
-	Weather(JSONObject json) throws JSONException{
+	public Weather(JSONObject json) throws JSONException{
 		aqi=json.getString("aqi");
 		city=json.getString("city");
 		city=json.getString("city");

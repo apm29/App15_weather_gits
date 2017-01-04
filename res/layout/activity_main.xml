@@ -44,20 +44,30 @@
         android:textSize="20sp"
         android:hint="未来三天的天气信息" />
 
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_width="match_parent"
+        android:layout_height="234dp"
+        android:layout_alignBottom="@+id/textView1" >
+
+    </ListView>
+
     <LinearLayout
-          android:id="@+id/layout"
-       	android:visibility="invisible"
+        android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignLeft="@+id/editText1"
-        android:layout_alignParentTop="true"
-        android:orientation="vertical" >
+        android:layout_alignTop="@+id/textView1"
+        android:orientation="vertical"
+        android:visibility="invisible" >
+
 		<ProgressBar 
 		    android:id="@+id/pb"
 		android:layout_gravity="center"    
 		android:layout_marginTop="40dp"
 		android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+
     </LinearLayout>
 
 </RelativeLayout>

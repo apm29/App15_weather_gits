@@ -1,16 +1,12 @@
 package com.example.app15_weather;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.net.URLEncoder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.example.app15_weather.bean.Weather;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,9 +17,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +36,8 @@ public class MainActivity extends Activity implements OnClickListener {
 	ProgressDialog pd;
 	ProgressBar pb;
 	LinearLayout layout;
+	ListView lv;
+	JSONArray forecast = null;
 	private final int SUCCESS = 1;
 	private final int FAIL = 2;
 	private final int WRONGCITY = 3;
@@ -47,20 +49,78 @@ public class MainActivity extends Activity implements OnClickListener {
 			switch (msg.what) {
 			case SUCCESS:
 				tv.setText(msg.obj.toString());
+				// 显示在listview
+				Log.e("success", "s");
+				forecast = (JSONArray) msg.obj;
 				break;
 			case FAIL:
 				Toast.makeText(MainActivity.this, "fail1", 0).show();
+				Log.e("success", "s1");
 				tv.setText(msg.obj.toString());
 				break;
 			case WRONGCITY:
 				Toast.makeText(MainActivity.this, "fail2", 0).show();
 				tv.setText(msg.obj.toString());
+				Log.e("success", "s2");
 				break;
 			}
 			layout.setVisibility(View.INVISIBLE);
+			tv.setVisibility(View.INVISIBLE);
+			lv.setAdapter(new MyAdapter());
 		}
 
 	};
+
+	class MyAdapter extends BaseAdapter {
+
+		@Override
+		public int getCount() {
+			// TODO Auto-generated method stub
+			return forecast.length();
+		}
+
+		@Override
+		public Object getItem(int position) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public long getItemId(int position) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+
+			if (convertView == null) {
+				// 生成view
+				convertView = (LinearLayout) View.inflate(MainActivity.this,
+						R.layout.listitem, null);
+			}
+			JSONObject item = null;
+			try {
+				item = (JSONObject) forecast.get(position);
+				// 天
+				TextView tv_sub1 = (TextView) convertView
+						.findViewById(R.id.tv_sub1);
+				tv_sub1.setText(item.getString("date"));
+				// 天气信息
+				TextView tv_sub2 = (TextView) convertView
+						.findViewById(R.id.tv_sub2);
+				tv_sub2.setText(item.getString("fengli")
+						+ item.getString("fengxiang") + item.getString("low")
+						+ item.getString("high") + item.getString("type"));
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			return convertView;
+		}
+
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,9 +129,11 @@ public class MainActivity extends Activity implements OnClickListener {
 		btn = (Button) findViewById(R.id.button1);
 		edt = (EditText) findViewById(R.id.editText1);
 		tv = (TextView) findViewById(R.id.textView1);
-		pb=(ProgressBar)findViewById(R.id.pb);
-		layout =(LinearLayout)findViewById(R.id.layout);
+		pb = (ProgressBar) findViewById(R.id.pb);
+		layout = (LinearLayout) findViewById(R.id.layout);
 		btn.setOnClickListener(this);
+		lv = (ListView) findViewById(R.id.listView1);
+
 	}
 
 	@Override
@@ -88,7 +150,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		final String city = edt.getText().toString().trim();
 		if (city != null && city != "") {
 			new Thread() {
-				
+
 				public void run() {
 					try {
 						path = "http://wthrcdn.etouch.cn/weather_mini?city=";
@@ -98,15 +160,18 @@ public class MainActivity extends Activity implements OnClickListener {
 						// "http://wthrcdn.etouch.cn/weather_mini?city=%E6%9D%AD%E5%B7%9E";
 						Log.e("success", path);
 						String src = ConnectResHelper.getSrc(path);
+						Log.e("success", src);
 						JSONObject result = new JSONObject(src);
-
+						Log.e("success", result.toString());
 						if (result.getString("desc").equals("OK")) {
 
 							JSONArray jsonArray = result.getJSONObject("data")
 									.getJSONArray("forecast");
+							Log.e("success", jsonArray.toString());
 							Message msg = Message.obtain();
 							msg.obj = jsonArray;
 							msg.what = SUCCESS;
+
 							handler.sendMessage(msg);
 
 						} else {
@@ -115,6 +180,8 @@ public class MainActivity extends Activity implements OnClickListener {
 							msg.what = WRONGCITY;
 							handler.sendMessage(msg);
 						}
+						// lv.setAdapter(new MyAdapter());
+						Log.e("success", "111");
 					} catch (Exception e) {
 						e.printStackTrace();
 						Message msg = Message.obtain();
