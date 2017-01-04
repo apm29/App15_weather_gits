@@ -117,8 +117,11 @@ public class MainActivity extends Activity implements OnClickListener {
 				if(item.getString("type").contains("”Í")){
 					iv_w.setImageResource(R.drawable.rain);
 				}
-				if(item.getString("type").contains("“ı")){
+				if(item.getString("type").contains("“ı")||item.getString("type").contains("ˆ≤")){
 					iv_w.setImageResource(R.drawable.cloud);
+				}
+				if(item.getString("type").contains("«Á")){
+					iv_w.setImageResource(R.drawable.ic_launcher);
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block

@@ -13,7 +13,7 @@ public class ConnectResHelper {
 	public static String getSrc(String path) throws IOException{
 		URL url=new URL(path);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		conn.setConnectTimeout(5000);
+		conn.setConnectTimeout(3000);
 		InputStream is = conn.getInputStream();
 		ByteArrayOutputStream baos=new ByteArrayOutputStream();
 		byte[] buf=new byte[2048];
