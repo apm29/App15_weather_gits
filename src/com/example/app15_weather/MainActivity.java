@@ -48,10 +48,11 @@ public class MainActivity extends Activity implements OnClickListener {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case SUCCESS:
-				tv.setText(msg.obj.toString());
+				tv.setText("未来五天天气情况");
 				// 显示在listview
 				Log.e("success", "s");
 				forecast = (JSONArray) msg.obj;
+				lv.setAdapter(new MyAdapter());
 				break;
 			case FAIL:
 				Toast.makeText(MainActivity.this, "fail1", 0).show();
@@ -65,8 +66,10 @@ public class MainActivity extends Activity implements OnClickListener {
 				break;
 			}
 			layout.setVisibility(View.INVISIBLE);
-			tv.setVisibility(View.INVISIBLE);
-			lv.setAdapter(new MyAdapter());
+			//tv.setVisibility(View.INVISIBLE);
+			//把listview添加适配器
+			
+			
 		}
 
 	};
@@ -75,19 +78,16 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		@Override
 		public int getCount() {
-			// TODO Auto-generated method stub
 			return forecast.length();
 		}
 
 		@Override
 		public Object getItem(int position) {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public long getItemId(int position) {
-			// TODO Auto-generated method stub
 			return 0;
 		}
 
@@ -106,12 +106,20 @@ public class MainActivity extends Activity implements OnClickListener {
 				TextView tv_sub1 = (TextView) convertView
 						.findViewById(R.id.tv_sub1);
 				tv_sub1.setText(item.getString("date"));
+				ImageView iv_w=(ImageView) convertView.findViewById(R.id.iv_sub);
 				// 天气信息
 				TextView tv_sub2 = (TextView) convertView
 						.findViewById(R.id.tv_sub2);
-				tv_sub2.setText(item.getString("fengli")
-						+ item.getString("fengxiang") + item.getString("low")
+				tv_sub2.setText("风力:"+item.getString("fengli")
+						+"风向:"+ item.getString("fengxiang") +"\n" +item.getString("low")
 						+ item.getString("high") + item.getString("type"));
+				//如果是雨天就改图标
+				if(item.getString("type").contains("雨")){
+					iv_w.setImageResource(R.drawable.rain);
+				}
+				if(item.getString("type").contains("阴")){
+					iv_w.setImageResource(R.drawable.cloud);
+				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
