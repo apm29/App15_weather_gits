@@ -53,14 +53,15 @@ public class MainActivity extends Activity implements OnClickListener {
 				Log.e("success", "s");
 				forecast = (JSONArray) msg.obj;
 				lv.setAdapter(new MyAdapter());
+				Toast.makeText(MainActivity.this, "更新成功", 0).show();
 				break;
 			case FAIL:
-				Toast.makeText(MainActivity.this, "fail1", 0).show();
+				Toast.makeText(MainActivity.this, "连接失败,检查下网络?", 0).show();
 				Log.e("success", "s1");
 				tv.setText(msg.obj.toString());
 				break;
 			case WRONGCITY:
-				Toast.makeText(MainActivity.this, "fail2", 0).show();
+				Toast.makeText(MainActivity.this, "没有这个城市,再查查?", 0).show();
 				tv.setText(msg.obj.toString());
 				Log.e("success", "s2");
 				break;
