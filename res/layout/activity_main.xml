@@ -10,14 +10,15 @@
 
     <EditText
         android:id="@+id/editText1"
-        android:text="北京"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="17dp"
-        android:ems="10" android:inputType="text">
+        android:ems="10"
+        android:inputType="text"
+        android:text="北京" >
 
         <requestFocus />
     </EditText>
@@ -49,7 +50,6 @@
         android:layout_width="match_parent"
         android:layout_height="234dp"
         android:layout_alignParentBottom="true" >
-
     </ListView>
 
     <LinearLayout
@@ -61,13 +61,12 @@
         android:orientation="vertical"
         android:visibility="invisible" >
 
-		<ProgressBar 
-		    android:id="@+id/pb"
-		android:layout_gravity="center"    
-		android:layout_marginTop="40dp"
-		android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
+        <ProgressBar
+            android:id="@+id/pb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp" />
     </LinearLayout>
 
 </RelativeLayout>

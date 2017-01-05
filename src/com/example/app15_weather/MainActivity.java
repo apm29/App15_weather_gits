@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -53,6 +54,10 @@ public class MainActivity extends Activity implements OnClickListener {
 				Log.e("success", "s");
 				forecast = (JSONArray) msg.obj;
 				lv.setAdapter(new MyAdapter());
+				AlphaAnimation aa=new AlphaAnimation(0.1f, 0.9f);
+				aa.setDuration(1500);
+				lv.setAnimation(aa);
+				
 				Toast.makeText(MainActivity.this, "更新成功", 0).show();
 				break;
 			case FAIL:
@@ -75,7 +80,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	};
 
-	class MyAdapter extends BaseAdapter {
+	class MyAdapter extends BaseAdapter {//ListView的适配器
 
 		@Override
 		public int getCount() {
@@ -119,7 +124,7 @@ public class MainActivity extends Activity implements OnClickListener {
 					iv_w.setImageResource(R.drawable.rain);
 				}
 				if(item.getString("type").contains("阴")||item.getString("type").contains("霾")){
-					iv_w.setImageResource(R.drawable.cloud);
+					iv_w.setImageResource(R.drawable.rain);
 				}
 				if(item.getString("type").contains("晴")){
 					iv_w.setImageResource(R.drawable.ic_launcher);
@@ -145,7 +150,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		layout = (LinearLayout) findViewById(R.id.layout);
 		btn.setOnClickListener(this);
 		lv = (ListView) findViewById(R.id.listView1);
-
+		
 	}
 
 	@Override
@@ -161,7 +166,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		final String city = edt.getText().toString().trim();
 		if (city != null && city != "") {
-			new Thread() {
+			new Thread() {//新线程执行网络访问
 
 				public void run() {
 					try {
